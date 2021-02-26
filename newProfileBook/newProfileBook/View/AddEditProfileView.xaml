@@ -4,7 +4,7 @@
              x:Class="newProfileBook.View.AddEditProfileView"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout >
             <Image 
                 WidthRequest="200"
                 HeightRequest="200"
@@ -12,21 +12,24 @@
                 BackgroundColor="Beige"/>
             <Entry x:Name="txtNickname"
                    Placeholder="Nickname"
-                   Margin="50,0,50,0"
+                   VerticalOptions="Center"
+                   Margin="50,50,50,0"
                    Text="{Binding Nickname}"/>
             <Entry x:Name="txtName"
                    Placeholder="Name"
-                   Margin="50,0,50,0"
+                   Margin="50,10,50,0"
                    Text="{Binding Name}"/>
             <Entry x:Name="txtDiscription"
                    Placeholder="Description"
-                   Margin="50,0,50,0"
-                   WidthRequest="300"
+                   VerticalOptions="Center"
+                   Margin="50,10,50,0"
                    HeightRequest="150"
+                   HorizontalTextAlignment="Start"
                    BackgroundColor="LightGray"
                    Text="{Binding Description}"/>
             <Button x:Name="btnAddProfile" 
                     Text="Save"
+                    Margin="50,0,50,0"
                     Command="{Binding AddProfile}"/>
 
         </StackLayout>

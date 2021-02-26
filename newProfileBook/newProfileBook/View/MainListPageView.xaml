@@ -4,38 +4,57 @@
              x:Class="newProfileBook.View.MainListPageView"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <StackLayout>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
             <ListView 
                 HasUnevenRows="True"
+                SelectionMode="None"
                 ItemsSource="{Binding ProfileList}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.View>
-                                <StackLayout>
-                                    <Label Text="{Binding Login}" />
-                                    <Label Text="{Binding Passwod}" />
-                                    <Label Text="{Binding Confirm}" />
-                                    <Label Text="{Binding CreationTime}" />
+                                <StackLayout 
+                                Orientation="Horizontal" 
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand">
+                                    <Image Source="{Binding ImgPath}" HeightRequest="100" Margin="30">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding }" 
+                                                          CommandParameter="{Binding .}"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <StackLayout VerticalOptions="Center">
+                                        <Label 
+                                        Text="{Binding Nickname}"
+                                        FontAttributes="Bold"/>
+                                        <Label 
+                                        Text="{Binding Name}"/>
+                                        <Label 
+                                        Text="{Binding CreationTime}"/>
+                                    </StackLayout>
                                 </StackLayout>
                             </ViewCell.View>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            
-            <Button 
-                x:Name="btnAddContact"
-                Text="+"
-                FontSize="20"
-                Margin="250,450,50,0"
-                WidthRequest="40"
-                HeightRequest="40"
-                CornerRadius="20"
-                BorderWidth="2"
-                BorderColor="Gray"
-                Command="{Binding OnTapAddUser}"
-                />
-        </StackLayout>
+
+            <Button
+            x:Name="addNewProfile"
+            Grid.Row="0"
+            HorizontalOptions="End"
+            VerticalOptions="End"
+            Margin="0,0,30,50" 
+            HeightRequest="70"
+            WidthRequest="70"
+            CornerRadius="35"
+            Command="{Binding OnTapAddUser}"/>
+        </Grid>
+
     </ContentPage.Content>
 </ContentPage>

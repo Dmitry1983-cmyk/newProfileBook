@@ -4,6 +4,7 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -16,8 +17,10 @@ namespace newProfileBook.ViewModel
         public string _nickname;
         public string _name;
         public string _cdescription;
+
         private readonly INavigationService _navigateService;
         private IRepository _repository;
+        private ObservableCollection<ProfileModel> _profileList;
 
         public string Title
         {
@@ -40,9 +43,17 @@ namespace newProfileBook.ViewModel
         public string Description
         {
             get { return _cdescription; }
-            set { SetProperty(ref _cdescription, value); }
+            set 
+            {
+               SetProperty(ref _cdescription, value);
+            }
         }
 
+        public ObservableCollection<ProfileModel> ProfileList
+        {
+            get => _profileList;
+            set => SetProperty(ref _profileList, value);
+        }
 
         #region--ctor
         public AddEditProfileViewModel(INavigationService navigationService, IRepository repository)
@@ -55,16 +66,23 @@ namespace newProfileBook.ViewModel
 
 
         #region--methods
-        public ICommand OnTapAddUser => new Command(ExecuteNavigateCommand);
-         private async void ExecuteNavigateCommand()
+
+        public ICommand AddProfile => new Command(ExecuteNavigateCommand);
+        private async void ExecuteNavigateCommand()
         {
             var profile = new ProfileModel()
             {
                 Nickname = Nickname,
                 Name = Name,
                 Description = Description,
+                CreationTime = DateTime.Now
             };
+
+            //var id=await _repository.InsertAsync(profile);
+            //profile.Id = id;
+            //ProfileList.Add(profile);
             await _repository.InsertAsync(profile);
+
         }
 
         #endregion

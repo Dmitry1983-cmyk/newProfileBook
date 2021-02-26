@@ -4,17 +4,19 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using newProfileBook.View;
 using System.Collections.ObjectModel;
-using System;
 using newProfileBook.Services.Repository;
+using System.Threading.Tasks;
 
 namespace newProfileBook
 {
-    class MainListPageViewModel: BindableBase
+    class MainListPageViewModel: BindableBase, IInitializeAsync
     {
         private readonly INavigationService _navigateService;
         private IRepository _repository;
 
         private string _title;
+        public string _nickname;
+        public string _name;
         private ObservableCollection<ProfileModel> _profileList;
 
         public string Title
@@ -23,7 +25,18 @@ namespace newProfileBook
             set { SetProperty(ref _title, value); }
         }
 
-        
+        public string Nickname
+        {
+            get { return _nickname; }
+            set { SetProperty(ref _nickname, value); }
+        }
+
+        public string Name
+        {
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
+        }
+
         public ObservableCollection<ProfileModel> ProfileList
         {
             get => _profileList;
@@ -36,9 +49,6 @@ namespace newProfileBook
             Title = "Main List Page";
             _navigateService = navigationService;
             _repository = repository;
-
-            var profileList = _repository.GetAllAsync<ProfileModel>();
-            ProfileList = new ObservableCollection<ProfileModel>();
         }
         #endregion
 
@@ -47,14 +57,20 @@ namespace newProfileBook
         public ICommand OnTapAddUser => new Command(ExecuteNavigateCommand);
         async private void ExecuteNavigateCommand()
         {
-            //var profile = new ProfileModel()
-            //{
-            //    Login = Login,
-            //    Password = Password,
-            //    Confirm = Confirm,
-            //    CreationTime =DateTime.Now
-            //};
             await _navigateService.NavigateAsync($"{nameof(AddEditProfileView)}");
+        }
+
+
+        #endregion
+
+
+        #region --- show data users from db
+
+        public async Task InitializeAsync(INavigationParameters parameters)
+        {
+            var profileList = await _repository.GetAllAsync<ProfileModel>();
+            ProfileList = new ObservableCollection<ProfileModel>(profileList);
+            
         }
 
         #endregion
