@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="newProfileBook.View.MainListPageView"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView 
+                HasUnevenRows="True"
+                ItemsSource="{Binding ProfileList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <StackLayout>
+                                    <Label Text="{Binding Login}" />
+                                    <Label Text="{Binding Passwod}" />
+                                    <Label Text="{Binding Confirm}" />
+                                    <Label Text="{Binding CreationTime}" />
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            <Button 
+                x:Name="btnAddContact"
+                Text="+"
+                FontSize="20"
+                Margin="250,450,50,0"
+                WidthRequest="40"
+                HeightRequest="40"
+                CornerRadius="20"
+                BorderWidth="2"
+                BorderColor="Gray"
+                Command="{Binding OnTapAddUser}"
+                />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
