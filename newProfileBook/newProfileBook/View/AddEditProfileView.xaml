@@ -3,7 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.View.AddEditProfileView"
              Title="{Binding Title}">
-    <ContentPage.Content>
+    
+        
+        <ContentPage.ToolbarItems>
+            <ToolbarItem
+            Order="Primary"
+            Priority="1"
+            Command="{Binding AddProfile}"
+            IconImageSource="ic_save.png"/>
+        </ContentPage.ToolbarItems>
+        
         <StackLayout >
             
             <Image
@@ -33,11 +42,8 @@
                    HorizontalTextAlignment="Start"
                    BackgroundColor="LightGray"
                    Text="{Binding Description}"/>
-            <Button x:Name="btnAddProfile" 
-                    Text="Save"
-                    Margin="50,0,50,0"
-                    Command="{Binding AddProfile}"/>
+
 
         </StackLayout>
-    </ContentPage.Content>
+    
 </ContentPage>

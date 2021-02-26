@@ -94,7 +94,9 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_save.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\newProfileBook\newProfileBook.csproj">
       <Project>{410EB36E-EEF8-4E85-AE5A-ADC96A833C22}</Project>
