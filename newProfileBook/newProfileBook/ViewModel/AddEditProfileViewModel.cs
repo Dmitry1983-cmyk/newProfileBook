@@ -6,6 +6,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -91,24 +92,81 @@ namespace newProfileBook.ViewModel
                 CreationTime = DateTime.Now
             };
 
-            //var id=await _repository.InsertAsync(profile);
+            //var id = await _repository.InsertAsync(profile);
             //profile.Id = id;
             //ProfileList.Add(profile);
-            await _repository.InsertAsync(profile);
 
+            await _repository.InsertAsync(profile);
+            await _navigateService.GoBackAsync();
         }
 
         public ICommand ImageTappedCommand =>new Command(OnImageTappedCommand);
         private void OnImageTappedCommand()
         {
-            //_userDialogs.ActionSheet(new ActionSheetConfig()
-            //    .SetUseBottomSheet(true)
-            //    .SetTitle("")
-            //    .SetCancel(LocalizedResources["CancelLabel"], null, "ic_cancel.png")
-            //    .Add(LocalizedResources["FromGalleryLabel"], () => TakeFromGalleryAsync(), "ic_collections.png")
-            //    .Add(LocalizedResources["TakePictureLabel"], () => TakeFromCameraAsync(), "ic_camera_alt.png"));
+            
         }
         #endregion
+
+        //---------------------удаление по клику
+        private ProfileModel _selectedItem;
+        public ProfileModel SelectedItem
+        {
+            get { return _selectedItem; }
+            set { SetProperty(ref _selectedItem, value); }
+        }
+        public ICommand OnTapDeleteUser => new Command(DeleteCommand);
+        async private void DeleteCommand()
+        {
+            if (SelectedItem != null)
+            {
+                //начало модалки
+                var confirmConfig = new ConfirmConfig()//он возвращает true если ОК
+                {
+                    Message = "Are yo really want to deled this profile?",
+                    OkText = "Delete",
+                    CancelText = "Cancel"
+                };
+
+                var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);//после того как инициализирловали ACR в MainActivity 
+                if (confirm)
+                {
+                    await _repository.DleteAsync(SelectedItem);
+                    ProfileList.Remove(SelectedItem);
+                }
+                //проверка и конец модалки
+            }
+        }
+        //-------------обновление 
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            base.OnPropertyChanged(args);
+            if (args.PropertyName == nameof(SelectedItem))
+            {
+                Name = SelectedItem.Name;
+                Nickname = SelectedItem.Nickname;
+            }
+        }
+        public ICommand OnTapUpdateUser => new Command(UdateCommand);
+        async private void UdateCommand()
+        {
+            if (SelectedItem != null)
+            {
+                var new_profile = new ProfileModel()
+                {
+                    Id = SelectedItem.Id,
+                    Nickname = Nickname,
+                    Name = Name,
+                    CreationTime = DateTime.Now
+                };
+
+                var index = ProfileList.IndexOf(SelectedItem);
+                ProfileList.Remove(SelectedItem);
+
+                await _repository.UpdateAsync(new_profile);
+                ProfileList.Insert(index,new_profile);
+            }
+        }
+        //---------------------------------------
 
     }
 }

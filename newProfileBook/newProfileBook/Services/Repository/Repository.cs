@@ -25,6 +25,11 @@ namespace newProfileBook.Services.Repository
             });
         }
 
+        public async Task<int> DeleteAllItems<T>(T entity) where T : IEntityBase, new()
+        {
+            return await _database.Value.DeleteAllAsync<T>();
+        }
+
         public async Task<int> DleteAsync<T>(T entity) where T : IEntityBase, new()
         {
             return await _database.Value.DeleteAsync<T>(entity);

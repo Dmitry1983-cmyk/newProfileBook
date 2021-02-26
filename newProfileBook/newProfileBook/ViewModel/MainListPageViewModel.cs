@@ -6,10 +6,12 @@ using newProfileBook.View;
 using System.Collections.ObjectModel;
 using newProfileBook.Services.Repository;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System;
 
 namespace newProfileBook
 {
-    class MainListPageViewModel: BindableBase, IInitializeAsync
+    class MainListPageViewModel : BindableBase, IInitializeAsync
     {
         private readonly INavigationService _navigateService;
         private IRepository _repository;
@@ -42,6 +44,7 @@ namespace newProfileBook
             get => _profileList;
             set => SetProperty(ref _profileList, value);
         }
+
 
         #region --ctor
         public MainListPageViewModel(INavigationService navigationService, IRepository repository)

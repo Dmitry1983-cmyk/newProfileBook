@@ -3,6 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="newProfileBook.View.MainListPageView"
              Title="{Binding Title}">
+
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Order="Primary"
+            Priority="1"
+            Command="{Binding LogOutTappedCommand}"
+            IconImageSource="ic_exit_to_app.png"/>
+        <ToolbarItem
+            Order="Primary"
+            Priority="1"
+            Command="{Binding SettingsTappedCommand}"
+            IconImageSource="ic_settings.png"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         
         <Grid>
@@ -12,7 +27,7 @@
 
             <ListView 
                 HasUnevenRows="True"
-                SelectionMode="None"
+                SelectedItem="{Binding SelectedItem}"
                 ItemsSource="{Binding ProfileList}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -43,7 +58,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
+            
             <Button
             x:Name="addNewProfile"
             Grid.Row="0"
@@ -59,7 +74,10 @@
             FontSize="35"
             CornerRadius="35"
             Command="{Binding OnTapAddUser}"/>
-        </Grid>
 
+        </Grid>
+        
+        
     </ContentPage.Content>
+
 </ContentPage>
