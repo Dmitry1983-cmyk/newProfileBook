@@ -52,6 +52,11 @@
             Margin="0,0,30,50" 
             HeightRequest="70"
             WidthRequest="70"
+            BackgroundColor="Blue"
+            BorderWidth="5"
+            BorderColor="Gray"
+            Text="+"
+            FontSize="35"
             CornerRadius="35"
             Command="{Binding OnTapAddUser}"/>
         </Grid>

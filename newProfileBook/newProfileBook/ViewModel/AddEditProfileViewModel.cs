@@ -1,4 +1,5 @@
-﻿using newProfileBook.Services.Repository;
+﻿using Acr.UserDialogs;
+using newProfileBook.Services.Repository;
 using newProfileBook.View;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -17,6 +18,7 @@ namespace newProfileBook.ViewModel
         public string _nickname;
         public string _name;
         public string _cdescription;
+        private string imagePath;
 
         private readonly INavigationService _navigateService;
         private IRepository _repository;
@@ -49,6 +51,16 @@ namespace newProfileBook.ViewModel
             }
         }
 
+        public string ImagePath
+        {
+            get { return imagePath; }
+            set
+            {
+                imagePath = value;
+                SetProperty(ref imagePath, value);
+            }
+        }
+
         public ObservableCollection<ProfileModel> ProfileList
         {
             get => _profileList;
@@ -61,6 +73,7 @@ namespace newProfileBook.ViewModel
             Title = "Add Profile Page";
             _navigateService = navigationService;
             _repository = repository;
+            ImagePath = "pic_profile.png";
         }
         #endregion
 
@@ -85,6 +98,16 @@ namespace newProfileBook.ViewModel
 
         }
 
+        public ICommand ImageTappedCommand =>new Command(OnImageTappedCommand);
+        private void OnImageTappedCommand()
+        {
+            //_userDialogs.ActionSheet(new ActionSheetConfig()
+            //    .SetUseBottomSheet(true)
+            //    .SetTitle("")
+            //    .SetCancel(LocalizedResources["CancelLabel"], null, "ic_cancel.png")
+            //    .Add(LocalizedResources["FromGalleryLabel"], () => TakeFromGalleryAsync(), "ic_collections.png")
+            //    .Add(LocalizedResources["TakePictureLabel"], () => TakeFromCameraAsync(), "ic_camera_alt.png"));
+        }
         #endregion
 
     }

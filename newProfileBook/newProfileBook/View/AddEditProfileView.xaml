@@ -5,14 +5,20 @@
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout >
-            <Image 
-                WidthRequest="200"
-                HeightRequest="200"
-                HorizontalOptions="Center"
-                BackgroundColor="Beige"/>
+            
+            <Image
+            HeightRequest="170" 
+            Margin="0,10"
+            Source="{Binding ImagePath}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ImageTappedCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+            
             <Entry x:Name="txtNickname"
                    Placeholder="Nickname"
                    VerticalOptions="Center"
+                   FontAttributes="Bold"
                    Margin="50,50,50,0"
                    Text="{Binding Nickname}"/>
             <Entry x:Name="txtName"

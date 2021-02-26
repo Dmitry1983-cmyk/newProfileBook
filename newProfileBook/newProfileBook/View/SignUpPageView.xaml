@@ -30,6 +30,7 @@
                 x:Name="btnRegister"
                 Text="register"
                 Margin="80,80,80,80"
+                BackgroundColor="Orange"
                 Command="{Binding OnTapRegisterUser}"
                 />
         </StackLayout>

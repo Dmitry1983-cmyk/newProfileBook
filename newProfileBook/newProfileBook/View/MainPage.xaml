@@ -25,6 +25,7 @@
             VerticalOptions="Center"
             WidthRequest="250"
             Margin="80,100,80,0"
+            BackgroundColor="Orange"
             Command="{Binding OnTapLogin}"
             />
         <Label 
