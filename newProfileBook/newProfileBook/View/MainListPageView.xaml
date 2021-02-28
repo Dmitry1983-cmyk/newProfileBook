@@ -14,7 +14,7 @@
         <ToolbarItem
             Order="Primary"
             Priority="1"
-            Command="{Binding SettingsTappedCommand}"
+            Command="{Binding SettingsCommand}"
             IconImageSource="ic_settings.png"/>
     </ContentPage.ToolbarItems>
 

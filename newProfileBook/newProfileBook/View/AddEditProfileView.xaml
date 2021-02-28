@@ -20,7 +20,7 @@
             Margin="0,10"
             Source="{Binding ImagePath}">
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ImageTappedCommand}"/>
+                    <TapGestureRecognizer Command="{Binding ImageCommand}"/>
                 </Image.GestureRecognizers>
             </Image>
             
@@ -39,7 +39,7 @@
                    VerticalOptions="Center"
                    Margin="50,10,50,0"
                    HeightRequest="150"
-                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Start"
                    BackgroundColor="LightGray"
                    Text="{Binding Description}"/>
 

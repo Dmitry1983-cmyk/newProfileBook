@@ -10,10 +10,11 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Plugin.Media.Abstractions;
 
 namespace newProfileBook.ViewModel
 {
-    public class AddEditProfileViewModel: BindableBase
+    public class AddEditProfileViewModel : BindableBase
     {
         public string _title;
         public string _nickname;
@@ -22,6 +23,8 @@ namespace newProfileBook.ViewModel
         private string imagePath;
 
         private readonly INavigationService _navigateService;
+        private IUserDialogs _userDialogs;
+        private IMedia _media;
         private IRepository _repository;
         private ObservableCollection<ProfileModel> _profileList;
 
@@ -46,9 +49,9 @@ namespace newProfileBook.ViewModel
         public string Description
         {
             get { return _cdescription; }
-            set 
+            set
             {
-               SetProperty(ref _cdescription, value);
+                SetProperty(ref _cdescription, value);
             }
         }
 
@@ -75,6 +78,8 @@ namespace newProfileBook.ViewModel
             _navigateService = navigationService;
             _repository = repository;
             ImagePath = "pic_profile.png";
+
+
         }
         #endregion
 
@@ -100,73 +105,26 @@ namespace newProfileBook.ViewModel
             await _navigateService.GoBackAsync();
         }
 
-        public ICommand ImageTappedCommand =>new Command(OnImageTappedCommand);
-        private void OnImageTappedCommand()
+
+
+        public ICommand ImageCommand => new Command(OnImageCommand);
+        private void OnImageCommand()
         {
-            
+            _userDialogs = UserDialogs.Instance;
+            ActionSheetConfig config = new ActionSheetConfig();
+
+            List<ActionSheetOption> Options = new List<ActionSheetOption>();
+            Options.Add(new ActionSheetOption("Gallery", null, "ic_collections_black.png"));
+            Options.Add(new ActionSheetOption("Camera", null, "ic_camera_alt_black.png"));
+            ActionSheetOption cancel = new ActionSheetOption("Cancel", null, null);
+
+            config.Options = Options;
+            config.Cancel = cancel;
+
+            _userDialogs.ActionSheet(config);
         }
+
         #endregion
-
-        //---------------------удаление по клику
-        private ProfileModel _selectedItem;
-        public ProfileModel SelectedItem
-        {
-            get { return _selectedItem; }
-            set { SetProperty(ref _selectedItem, value); }
-        }
-        public ICommand OnTapDeleteUser => new Command(DeleteCommand);
-        async private void DeleteCommand()
-        {
-            if (SelectedItem != null)
-            {
-                //начало модалки
-                var confirmConfig = new ConfirmConfig()//он возвращает true если ОК
-                {
-                    Message = "Are yo really want to deled this profile?",
-                    OkText = "Delete",
-                    CancelText = "Cancel"
-                };
-
-                var confirm = await UserDialogs.Instance.ConfirmAsync(confirmConfig);//после того как инициализирловали ACR в MainActivity 
-                if (confirm)
-                {
-                    await _repository.DleteAsync(SelectedItem);
-                    ProfileList.Remove(SelectedItem);
-                }
-                //проверка и конец модалки
-            }
-        }
-        //-------------обновление 
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
-        {
-            base.OnPropertyChanged(args);
-            if (args.PropertyName == nameof(SelectedItem))
-            {
-                Name = SelectedItem.Name;
-                Nickname = SelectedItem.Nickname;
-            }
-        }
-        public ICommand OnTapUpdateUser => new Command(UdateCommand);
-        async private void UdateCommand()
-        {
-            if (SelectedItem != null)
-            {
-                var new_profile = new ProfileModel()
-                {
-                    Id = SelectedItem.Id,
-                    Nickname = Nickname,
-                    Name = Name,
-                    CreationTime = DateTime.Now
-                };
-
-                var index = ProfileList.IndexOf(SelectedItem);
-                ProfileList.Remove(SelectedItem);
-
-                await _repository.UpdateAsync(new_profile);
-                ProfileList.Insert(index,new_profile);
-            }
-        }
-        //---------------------------------------
 
     }
 }

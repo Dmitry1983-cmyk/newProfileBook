@@ -8,6 +8,7 @@ using newProfileBook.Services.Repository;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System;
+using Acr.UserDialogs;
 
 namespace newProfileBook
 {
@@ -15,6 +16,7 @@ namespace newProfileBook
     {
         private readonly INavigationService _navigateService;
         private IRepository _repository;
+        private IUserDialogs _userDialogs;
 
         private string _title;
         public string _nickname;
@@ -52,7 +54,16 @@ namespace newProfileBook
             Title = "Main List Page";
             _navigateService = navigationService;
             _repository = repository;
+
         }
+        //public MainListPageViewModel(INavigationService navigationService, IRepository repository, IUserDialogs userDialogs)
+        //{
+        //    Title = "Main List Page";
+        //    _navigateService = navigationService;
+        //    _repository = repository;
+
+        //    _userDialogs = userDialogs;
+        //}
         #endregion
 
 
@@ -64,6 +75,18 @@ namespace newProfileBook
         }
 
 
+        public ICommand LogOutTappedCommand =>new Command(OnLogOutCommandAsync);
+        private async void OnLogOutCommandAsync()
+        {
+            //придумать как сделать logout
+            await _navigateService.NavigateAsync("/NavigationPage/MainPage");
+        }
+
+        public ICommand SettingsCommand => new Command(OnSettingsTappedCommandAsync);
+        private async void OnSettingsTappedCommandAsync()
+        {
+            await _navigateService.NavigateAsync(nameof(SettingsPage));
+        }
         #endregion
 
 
@@ -77,6 +100,7 @@ namespace newProfileBook
         }
 
         #endregion
+
     }
 }
 

@@ -3,12 +3,14 @@ using Prism.Navigation;
 using System.Windows.Input;
 using Xamarin.Forms;
 using newProfileBook.View;
+using Acr.UserDialogs;
 
 namespace newProfileBook
 {
     public class MainPageViewModel: BindableBase
     {
         private readonly INavigationService _navigateService;
+        private IUserDialogs _userDialogs;
 
         public string _title;
         public string _login;
@@ -31,13 +33,16 @@ namespace newProfileBook
             get { return _password; }
             set { SetProperty(ref _password, value); }
         }
-
+        #region--ctor
         public MainPageViewModel(INavigationService navigationService)
         {
             Title = "Main Page";
             _navigateService = navigationService;
         }
 
+        #endregion
+
+        #region --method
         public ICommand OnTapSignUpPage => new Command(ExecuteNavigateCommand);
 
         async private void ExecuteNavigateCommand()
@@ -52,5 +57,6 @@ namespace newProfileBook
             await _navigateService.NavigateAsync($"{nameof(MainListPageView)}");
         }
 
+        #endregion
     }
 }
