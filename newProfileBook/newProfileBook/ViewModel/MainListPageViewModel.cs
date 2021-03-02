@@ -14,13 +14,18 @@ namespace newProfileBook
 {
     class MainListPageViewModel : BindableBase, IInitializeAsync
     {
+       
+        
+
+
+
         private readonly INavigationService _navigateService;
         private IRepository _repository;
-        private IUserDialogs _userDialogs;
 
         private string _title;
         public string _nickname;
         public string _name;
+        public string _imgPath;
         private ObservableCollection<ProfileModel> _profileList;
 
         public string Title
@@ -41,6 +46,14 @@ namespace newProfileBook
             set { SetProperty(ref _name, value); }
         }
 
+        public string ImagePath
+        {
+            get { return _imgPath; }
+            set 
+            {
+                SetProperty(ref _imgPath,value);
+            }
+        }
         public ObservableCollection<ProfileModel> ProfileList
         {
             get => _profileList;
@@ -55,15 +68,11 @@ namespace newProfileBook
             _navigateService = navigationService;
             _repository = repository;
 
+            ImagePath = "pic_profile.png";
+            
         }
-        //public MainListPageViewModel(INavigationService navigationService, IRepository repository, IUserDialogs userDialogs)
-        //{
-        //    Title = "Main List Page";
-        //    _navigateService = navigationService;
-        //    _repository = repository;
 
-        //    _userDialogs = userDialogs;
-        //}
+
         #endregion
 
 
@@ -87,6 +96,14 @@ namespace newProfileBook
         {
             await _navigateService.NavigateAsync(nameof(SettingsPage));
         }
+
+
+        public ICommand RemoveCommand => new Command(OnRemoveTappedCommandAsync);
+        private async void OnRemoveTappedCommandAsync()
+        {
+            await _repository.DleteAsync(SelectedItem);
+        }
+
         #endregion
 
 
@@ -96,10 +113,28 @@ namespace newProfileBook
         {
             var profileList = await _repository.GetAllAsync<ProfileModel>();
             ProfileList = new ObservableCollection<ProfileModel>(profileList);
-            
         }
 
         #endregion
+
+        #region --selected item
+        private ProfileModel _selectedItem;
+        public ProfileModel SelectedItem
+        {
+            get { return _selectedItem; }
+            set { SetProperty(ref _selectedItem, value); }
+        }
+
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            base.OnPropertyChanged(args);
+        }
+
+
+        #endregion
+
+
 
     }
 }

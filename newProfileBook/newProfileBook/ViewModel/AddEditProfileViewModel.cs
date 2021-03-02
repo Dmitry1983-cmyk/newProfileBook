@@ -71,15 +71,14 @@ namespace newProfileBook.ViewModel
             set => SetProperty(ref _profileList, value);
         }
 
+        
         #region--ctor
         public AddEditProfileViewModel(INavigationService navigationService, IRepository repository)
         {
             Title = "Add Profile Page";
+            ImagePath = "pic_profile.png";
             _navigateService = navigationService;
             _repository = repository;
-            ImagePath = "pic_profile.png";
-
-
         }
         #endregion
 
@@ -93,16 +92,13 @@ namespace newProfileBook.ViewModel
             {
                 Nickname = Nickname,
                 Name = Name,
+                ImagePath= "pic_profile.png",
                 Description = Description,
                 CreationTime = DateTime.Now
             };
 
-            //var id = await _repository.InsertAsync(profile);
-            //profile.Id = id;
-            //ProfileList.Add(profile);
-
             await _repository.InsertAsync(profile);
-            await _navigateService.GoBackAsync();
+            await _navigateService.NavigateAsync(nameof(MainListPageView));
         }
 
 
@@ -110,12 +106,13 @@ namespace newProfileBook.ViewModel
         public ICommand ImageCommand => new Command(OnImageCommand);
         private void OnImageCommand()
         {
+            
             _userDialogs = UserDialogs.Instance;
             ActionSheetConfig config = new ActionSheetConfig();
 
             List<ActionSheetOption> Options = new List<ActionSheetOption>();
-            Options.Add(new ActionSheetOption("Gallery", null, "ic_collections_black.png"));
-            Options.Add(new ActionSheetOption("Camera", null, "ic_camera_alt_black.png"));
+            Options.Add(new ActionSheetOption("Gallery", () => FromGalleryAsync(), "ic_collections_black.png"));
+            Options.Add(new ActionSheetOption("Camera", () => FromCameraAsync(), "ic_camera_alt_black.png"));
             ActionSheetOption cancel = new ActionSheetOption("Cancel", null, null);
 
             config.Options = Options;
@@ -123,6 +120,30 @@ namespace newProfileBook.ViewModel
 
             _userDialogs.ActionSheet(config);
         }
+
+        public async void FromGalleryAsync()
+        {
+            var image = await _media.PickPhotoAsync();
+            if (image != null)
+            {
+                ImagePath = image.Path;
+            }
+            
+        }
+        public async void FromCameraAsync()
+        {
+            var image = await _media.TakePhotoAsync(new StoreCameraMediaOptions
+            {
+                Name = "CamPic.jpg"
+            });
+            if (image != null)
+            {
+                ImagePath = image.Path;
+            }
+        }
+
+        
+
 
         #endregion
 
